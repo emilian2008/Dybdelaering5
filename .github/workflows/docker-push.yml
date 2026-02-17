@@ -42,7 +42,7 @@ jobs:
         with:
           context: .
           # This explicitly looks for the standard "Dockerfile"
-          file: ./app/dockerfile
+          file: ./Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
