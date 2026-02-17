@@ -1,0 +1,8 @@
+FROM node:alpine
+
+WORKDIR /n8n
+COPY n8n/package*.json ./
+RUN apk add --no-cache python3 make g++ && npm install && apk del python3 make g++
+COPY n8n . 
+EXPOSE 8081
+CMD ["npm", "start"]
