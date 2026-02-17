@@ -1,0 +1,20 @@
+services:
+  frontend:
+    build: ./app
+    ports:
+      - "8081:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  backend:
+    build: ./n8n
+    ports:
+      - "8081:81"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
