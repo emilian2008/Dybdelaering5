@@ -1,1 +1,0 @@
-Leander det var ikke snilt
