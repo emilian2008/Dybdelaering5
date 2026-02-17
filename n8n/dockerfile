@@ -1,8 +1,6 @@
-FROM node:alpine
+FROM docker.n8n.io/n8nio/n8n
 
 WORKDIR /n8n
-COPY n8n/package*.json ./
-RUN apk add --no-cache python3 make g++ && npm install && apk del python3 make g++
-COPY n8n . 
-EXPOSE 8081
-CMD ["npm", "start"]
+COPY package*.json ./
+RUN npm install
+COPY . .

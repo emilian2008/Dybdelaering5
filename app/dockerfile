@@ -1,8 +1,8 @@
 FROM node:alpine
 
 WORKDIR /app
-COPY app/package*.json ./
+COPY package*.json ./
 RUN apk add --no-cache python3 make g++ && npm install && apk del python3 make g++
-COPY app . 
+COPY . . 
 EXPOSE 8081
 CMD ["npm", "start"]
