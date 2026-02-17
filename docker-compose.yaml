@@ -11,7 +11,7 @@ services:
   backend:
     build: ./n8n
     ports:
-      - "8081:81"
+      - "5678:5678"
     networks:
       - app-network
 

@@ -1,16 +1,24 @@
 {
-  "name": "dybdelaering-vg2-5",
+  "name": "typescript-app",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "TypeScript app",
+  "main": "app/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "app/index.ts",
+    "build": "tsc",
+    "dev": "ts-node-dev --respawn app/index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
   "devDependencies": {
-    "typescript": "^5.9.3"
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.0"
   }
 }
