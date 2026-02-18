@@ -1,8 +1,13 @@
-FROM node:alpine
+FROM node:18-alpine
 
 WORKDIR /app
+# Only copy package manifests first for a reproducible layer
 COPY package*.json ./
-RUN npm install
-COPY . . 
+# Install only production dependencies to avoid native-build issues from dev deps
+RUN npm install --omit=dev --no-audit --no-fund
+
+# Copy application sources
+COPY . .
+
 EXPOSE 8081
 CMD ["npm", "start"]
