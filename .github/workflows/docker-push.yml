@@ -9,43 +9,92 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - name: app
+            context: .
+            file: ./app/Dockerfile
+            image: typescript-docker-app
+          - name: n8n
+            context: ./n8n
+            file: ./n8n/dockerfile
+            image: n8n-service
 
     steps:
-      # 1. Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Set up Docker Buildx (Required for advanced caching and modern builds)
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # 3. Log in to Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # 4. Generate Docker metadata (Handle tags for main vs branches automatically)
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ secrets.DOCKERHUB_USERNAME }}/typescript-docker-app
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.image }}
           tags: |
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
             type=ref,event=branch
 
-      # 5. Build and Push
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: .
-          # This explicitly looks for the standard "Dockerfile"
-          file: ./app/Dockerfile
+          context: ${{ matrix.context }}
+          file: ${{ matrix.file }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          # Use GitHub Actions caching (Much faster than the previous method)
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Validate required secrets
+        run: |
+          if [ -z "${{ secrets.DOCKERHUB_USERNAME }}" ] || [ -z "${{ secrets.DOCKERHUB_TOKEN }}" ] || [ -z "${{ secrets.KUBECONFIG }}" ]; then
+            echo "Missing required secrets: DOCKERHUB_USERNAME, DOCKERHUB_TOKEN, or KUBECONFIG" >&2
+            exit 1
+          fi
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: '1.27.0'
+
+      - name: Configure kubeconfig
+        env:
+          KUBECONFIG_B64: ${{ secrets.KUBECONFIG }}
+        run: |
+          echo "$KUBECONFIG_B64" | base64 --decode > kubeconfig
+          export KUBECONFIG=$PWD/kubeconfig
+
+      - name: Apply manifests
+        run: |
+          export KUBECONFIG=$PWD/kubeconfig
+          kubectl apply -f k8s/
+
+      - name: Update images
+        run: |
+          export KUBECONFIG=$PWD/kubeconfig
+          kubectl set image deployment/app-deployment app=${{ secrets.DOCKERHUB_USERNAME }}/typescript-docker-app:latest --record || true
+          kubectl set image deployment/n8n-deployment n8n=${{ secrets.DOCKERHUB_USERNAME }}/n8n-service:latest --record || true
+
+      - name: Rollout status
+        run: |
+          export KUBECONFIG=$PWD/kubeconfig
+          kubectl rollout status deployment/app-deployment --timeout=120s || true
+          kubectl rollout status deployment/n8n-deployment --timeout=120s || true
