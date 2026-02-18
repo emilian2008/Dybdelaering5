@@ -1,23 +1,14 @@
-FROM node:18-bullseye-slim AS builder
-
+FROM node:18-alpine
 WORKDIR /app
-COPY package*.json ./
-# Install dev deps for building (typescript, etc.)
-RUN npm ci
 
-# Copy source and build
+# Only copy package manifests first for a reproducible layer
+COPY package*.json ./
+
+# Install only production dependencies to avoid native-build issues from dev deps
+RUN npm install --omit=dev --no-audit --no-fund
+
+# Copy application sources
 COPY . .
-RUN npm run build
-
-FROM node:18-bullseye-slim
-
-WORKDIR /app
-# Install only production deps in the final image
-COPY package*.json ./
-RUN npm ci --omit=dev --no-audit --no-fund
-
-# Copy built output from builder
-COPY --from=builder /app/dist ./dist
 
 EXPOSE 8081
-CMD ["node", "dist/index.js"]
+CMD ["npm", "start"]
