@@ -1,12 +1,13 @@
 {
+  "type": "module",
   "name": "typescript-app",
   "version": "1.0.0",
   "description": "TypeScript app",
-  "main": "app/index.ts",
+  "main": "app/src/index.ts",
   "scripts": {
-    "start": "app/index.ts",
+    "start": "ts-node app/src/index.ts",
     "build": "tsc",
-    "dev": "ts-node-dev --respawn app/index.ts"
+    "dev": "ts-node-dev --respawn app/src/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,6 @@
     "@types/node": "^20.0.0",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.9.3"
   }
 }

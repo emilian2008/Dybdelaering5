@@ -3,12 +3,20 @@ WORKDIR /app
 
 # Only copy package manifests first for a reproducible layer
 COPY package*.json ./
+COPY package-lock*.json ./
 
-# Install only production dependencies to avoid native-build issues from dev deps
-RUN npm install --omit=dev --no-audit --no-fund
+# Install all dependencies including dev (needed for build)
+RUN npm install --no-audit --no-fund
 
-# Copy application sources
+# Copy application sources and build config
+COPY tsconfig.json ./
 COPY . .
 
+# Build TypeScript (outputs alongside sources)
+RUN npm run build
+
+# Clean up dev dependencies
+RUN npm install --omit=dev --no-audit --no-fund
+
 EXPOSE 8081
-CMD ["npm", "start"]
+CMD ["node", "dist/index.js"]
