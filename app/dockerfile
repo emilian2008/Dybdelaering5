@@ -3,13 +3,12 @@ WORKDIR /app
 
 # Only copy package manifests first for a reproducible layer
 COPY package*.json ./
-COPY package-lock*.json ./
 
 # Install all dependencies including dev (needed for build)
-RUN npm install
+RUN npm install --no-audit --no-fund
 
 # Copy application sources and build config
-COPY tsconfig*.json ./
+COPY tsconfig.json ./
 COPY . .
 
 # Build TypeScript (outputs alongside sources)
