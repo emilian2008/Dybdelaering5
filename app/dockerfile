@@ -9,7 +9,7 @@ COPY package-lock*.json ./
 RUN npm install --no-audit --no-fund
 
 # Copy application sources and build config
-COPY tsconfig.json ./
+COPY tsconfig*.json ./
 COPY . .
 
 # Build TypeScript (outputs alongside sources)
