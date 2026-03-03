@@ -9,13 +9,13 @@ services:
       MYSQL_USER: "${MYSQL_USER}"
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
     ports:
-      - "3306:3306"
+      - "${PORT_MYSQL}"
     volumes:
       - db_data:/var/lib/mysql
   frontend:
     build: ./app
     ports:
-      - "8081:80"
+      - "${PORT_FRONTEND}"
     depends_on:
       - backend
     networks:
@@ -24,7 +24,7 @@ services:
   backend:
     build: ./n8n
     ports:
-      - "5678:5678"
+      - "${PORT_BACKEND}"
     networks:
       - app-network
 
