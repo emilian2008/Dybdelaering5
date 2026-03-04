@@ -1,8 +1,21 @@
 services:
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+    ports:
+      - "${PORT_MYSQL}"
+    volumes:
+      - db_data:/var/lib/mysql
   frontend:
     build: ./app
     ports:
-      - "8081:80"
+      - "${PORT_FRONTEND}"
     depends_on:
       - backend
     networks:
@@ -11,10 +24,13 @@ services:
   backend:
     build: ./n8n
     ports:
-      - "5678:5678"
+      - "${PORT_BACKEND}"
     networks:
       - app-network
 
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  db_data:
