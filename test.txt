@@ -1,0 +1,1 @@
+teste bare version nummer i docker
