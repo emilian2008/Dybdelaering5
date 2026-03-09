@@ -27,6 +27,8 @@ services:
       - "${PORT_BACKEND}"
     networks:
       - app-network
+    environment:
+      - TZ=${TIMEZONE}
 
 networks:
   app-network:
