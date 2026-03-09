@@ -9,6 +9,7 @@ For the docker-compose.yaml to work, it needs some environment variables.
     PORT_MYSQL=3306:3306
     PORT_FRONTEND=8080:80
     PORT_BACKEND=5678:5678
+    TIMEZONE=Europe/Oslo
 
     - The example values for the ports are default for the services, and might already be occupied. Change these if necessary.
 
