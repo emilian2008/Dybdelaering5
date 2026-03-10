@@ -38,7 +38,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: false
           # This ensures 'app' and 'n8n' get their own unique version sequences
-          CUSTOM_TAG: ${{ matrix.name }}
+          # Add a trailing hyphen so tags become 'app-1.0.1' instead of 'app'
+          CUSTOM_TAG: ${{ matrix.name }}-
           DEFAULT_BUMP: patch
 
       - name: Set up Docker Buildx
