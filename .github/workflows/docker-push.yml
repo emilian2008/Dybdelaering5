@@ -58,8 +58,8 @@ jobs:
           images: ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.image }}
           tags: |
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
-            # This uses the new version number for Flux to track
-            type=raw,value=${{ steps.tag_version.outputs.new_tag }},enable=${{ github.event_name == 'push' }}
+            # Use fixed version 1.0.0 for the image tag
+            type=raw,value=1.0.0,enable=${{ github.event_name == 'push' }}
             type=ref,event=branch
 
       - name: Build and push Docker image
