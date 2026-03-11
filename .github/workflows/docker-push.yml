@@ -36,10 +36,10 @@ jobs:
         uses: anothrNick/github-tag-action@1.64.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WITH_V: false
+          WITH_V: true
           # This ensures 'app' and 'n8n' get their own unique version sequences
-          # Add a trailing hyphen so tags become 'app-1.0.1' instead of 'app'
-          CUSTOM_TAG: ${{ matrix.name }}-
+          # Use prefix/service-name format to avoid conflicts
+          CUSTOM_TAG: ${{ matrix.name }}/v
           DEFAULT_BUMP: patch
 
       - name: Set up Docker Buildx
