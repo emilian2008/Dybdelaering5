@@ -1,0 +1,22 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install --no-audit --no-fund
+
+# Copy application files
+COPY . .
+
+# Build Next.js app
+RUN npm run build
+
+# Remove dev dependencies
+RUN npm install --omit=dev --no-audit --no-fund
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
