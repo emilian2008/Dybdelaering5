@@ -1,7 +1,7 @@
 services:
   db:
     image: mysql:8.0
-    container_name: mysql_db
+    container_name: n8n-storage
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
@@ -11,7 +11,8 @@ services:
     ports:
       - "${PORT_MYSQL}"
     volumes:
-      - db_data:/var/lib/mysql
+      - n8n-storage:/var/lib/mysql
+        
   frontend:
     build: ./app
     ports:
@@ -29,10 +30,12 @@ services:
       - app-network
     environment:
       - TZ=${TIMEZONE}
+    volumes:
+      - ./n8n:/home/node/.n8n
 
 networks:
   app-network:
     driver: bridge
 
 volumes:
-  db_data:
+  n8n-storage:
