@@ -44,9 +44,10 @@ n8n_data/
 n8n/.cache/
 n8n/.tmp/
 
-*.sqlite
-*.sqlite-journal
-database.sqlite
+nodes/
+n8n/config
+crash.journal
+database.*
 
 *.swp
 *.swo
