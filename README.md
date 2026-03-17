@@ -13,7 +13,7 @@ For the docker-compose.yaml to work, it needs some environment variables.
     RESTART=always
 
     - The example values for the ports are default for the services, and might already be occupied. Change these if necessary.
-    - If you want, you can change the RESTART condition to any of the folowing to your preference:
+    - If you want, you can change the RESTART condition to any of the following to your preference:
         - no
         - always
         - on-failure
