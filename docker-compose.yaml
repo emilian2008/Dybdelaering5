@@ -34,6 +34,8 @@ services:
       - TZ=${TIMEZONE}
     volumes:
       - ./n8n:/home/node/.n8n
+    depends_on:
+      - db
 
 networks:
   app-network:
