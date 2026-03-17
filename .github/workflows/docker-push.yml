@@ -16,7 +16,7 @@ jobs:
         include:
           - name: app
             context: ./app
-            file: ./app/Dockerfile
+            file: ./app/my-app/Dockerfile
             image: typescript-docker-app
           - name: n8n
             context: ./n8n
