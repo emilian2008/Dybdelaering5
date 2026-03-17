@@ -10,8 +10,14 @@ For the docker-compose.yaml to work, it needs some environment variables.
     PORT_FRONTEND=3000:3000
     PORT_BACKEND=5678:5678
     TIMEZONE=Europe/Oslo
+    RESTART=always
 
     - The example values for the ports are default for the services, and might already be occupied. Change these if necessary.
+    - If you want, you can change the RESTART condition to any of the folowing to your preference:
+        - no
+        - always
+        - on-failure
+        - unless-stopped
 
 
 2) Run "docker compose up --build" in the root folder.
