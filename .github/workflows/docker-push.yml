@@ -15,7 +15,7 @@ jobs:
       matrix:
         include:
           - name: app
-            context: ./app
+            context: ./app/my-app
             file: ./app/my-app/Dockerfile
             image: typescript-docker-app
           - name: n8n
