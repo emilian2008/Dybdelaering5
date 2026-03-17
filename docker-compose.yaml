@@ -14,7 +14,8 @@ services:
       - n8n-storage:/var/lib/mysql
         
   frontend:
-    build: ./app
+    build: ./app/my-app
+    restart: always
     ports:
       - "${PORT_FRONTEND}"
     depends_on:
@@ -24,6 +25,7 @@ services:
 
   backend:
     build: ./n8n
+    restart: always
     ports:
       - "${PORT_BACKEND}"
     networks:
