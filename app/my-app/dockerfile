@@ -14,9 +14,6 @@ COPY . .
 # Build Next.js app
 RUN npm run build
 
-# Remove dev dependencies
-RUN npm install --omit=dev --no-audit --no-fund
-
 EXPOSE 3000
 
 CMD ["npm", "start"]
