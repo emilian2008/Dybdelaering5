@@ -52,3 +52,6 @@ database.*
 *.swp
 *.swo
 *.tmp
+
+!n8n-workflows/
+!n8n-workflows/**
