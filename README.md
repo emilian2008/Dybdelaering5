@@ -21,3 +21,4 @@ For the docker-compose.yaml to work, it needs some environment variables.
 
 
 2) Run "docker compose up --build" in the root folder.
+    - The first time you build the project, it may take a couple of minutes to start.
